@@ -7,3 +7,4 @@ build
 .vs_code
 .idea
 *.iml
+local/data

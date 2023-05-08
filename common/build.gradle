@@ -1,0 +1,16 @@
+group 'ru.tlnts.common'
+version '1.0'
+
+dependencies {
+    api 'org.springframework:spring-web'
+    api 'org.springframework:spring-webmvc'
+    api 'org.springframework.kafka:spring-kafka'
+    api 'org.apache.commons:commons-lang3'
+    api 'com.google.guava:guava'
+    api 'org.slf4j:slf4j-api:2.0.7'
+    api 'io.github.openfeign:feign-core:12.3'
+
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
