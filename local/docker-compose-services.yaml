@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  feed-service:
+    build:
+      context: feed-service
+      dockerfile: src/docker/Dockerfile
+    image: tlnts/feed-service:1.0
+    env_file: local.env
+    hostname: feed-service
+    container_name: feed-service
+    depends_on:
+      - broker
+      - postgres
+    ports:
+      - ${FEED_API_PORT:-8010}:8080
+      - ${FEED_METRICS_PORT:-8011}:8081
+    restart: on-failure
+    networks:
+      - tlnts-network
+
+networks:
+  tlnts-network:
+    driver: bridge
