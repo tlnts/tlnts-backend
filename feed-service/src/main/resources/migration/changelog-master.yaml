@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: feed-service/src/main/resources/migration/v1/changelog-v1.yaml

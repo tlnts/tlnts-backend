@@ -1,0 +1,12 @@
+group 'ru.tlnts.common'
+version '1.0'
+
+dependencies {
+    api 'org.springframework:spring-web'
+    api 'org.springframework.kafka:spring-kafka'
+    api 'org.apache.commons:commons-lang3'
+    api 'com.google.guava:guava'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
