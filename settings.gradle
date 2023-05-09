@@ -11,3 +11,5 @@ include 'common'
 
 include 'feed-api'
 include 'feed-service'
+include 'oauth-api'
+include 'oauth-service'
