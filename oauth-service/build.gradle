@@ -52,7 +52,7 @@ dependencies {
 liquibase {
     activities {
         main {
-            changeLogFile "${project.rootDir.absolutePath}/oauth-service/src/main/resources/migration/changelog-master.yaml"
+            changeLogFile "oauth-service/src/main/resources/migration/changelog-master.yaml"
             driver 'org.postgresql.Driver'
             url "${liquibaseUrl}"
             username "${liquibaseUsername}"

@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(320) NOT NULL,
   password VARCHAR(100) NOT NULL,
   active BOOLEAN NOT NULL,
-  timestamp(6) without time zone NOT NULL,
+  datetime_create timestamp(6) without time zone NOT NULL,
   CONSTRAINT pk_users PRIMARY KEY (id)
 );
 

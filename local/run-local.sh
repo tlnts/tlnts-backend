@@ -21,4 +21,5 @@ docker-compose \
   -f local/docker-compose-services.yaml \
   -p tlnts \
   up -d --no-deps --build \
-  feed-service
+  feed-service \
+  oauth-service
