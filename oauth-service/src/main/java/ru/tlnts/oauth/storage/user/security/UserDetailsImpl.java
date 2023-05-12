@@ -33,7 +33,8 @@ public class UserDetailsImpl implements UserDetails {
 		this.authorities = user.getRoles().stream()
 				.map(UserRole::name)
 				.map(GrandAuthorityImpl::new)
-				.collect(Collectors.toCollection(ArrayList::new));
+				// Mutable because immutable not serialized when token saved with JdbcOAuth2AuthorizationService
+				.collect(Collectors.toList());
 	}
 
 	@JsonCreator

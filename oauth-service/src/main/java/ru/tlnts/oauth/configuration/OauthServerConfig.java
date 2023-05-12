@@ -1,6 +1,5 @@
 package ru.tlnts.oauth.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -39,6 +38,8 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.JwtGenerator;
@@ -57,9 +58,11 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author mamedov
@@ -71,7 +74,6 @@ import java.util.UUID;
 public class OauthServerConfig {
 
 	private final OauthClientProperties clientProperties;
-	private final ObjectMapper objectMapper;
 
 	@Bean
 	@Order(1)
@@ -131,7 +133,13 @@ public class OauthServerConfig {
 				.scopes(scopes -> scopes.addAll(oauth.getScopes()))
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
-				.clientSettings(ClientSettings.builder().requireProofKey(false).requireAuthorizationConsent(false).build())
+				.tokenSettings(TokenSettings.builder()
+						.accessTokenTimeToLive(oauth.getAccessTokenTtl())
+						.build())
+				.clientSettings(ClientSettings.builder()
+						.requireProofKey(false)
+						.requireAuthorizationConsent(false)
+						.build())
 				.build();
 
 		OauthClientProperties.Client web = clientProperties.getWeb();
@@ -145,7 +153,15 @@ public class OauthServerConfig {
 				.scopes(scopes -> scopes.addAll(web.getScopes()))
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
-				.clientSettings(ClientSettings.builder().requireProofKey(false).requireAuthorizationConsent(false).build())
+				.tokenSettings(TokenSettings.builder()
+						.accessTokenTimeToLive(web.getAccessTokenTtl())
+						.refreshTokenTimeToLive(web.getRefreshTokenTtl())
+						.reuseRefreshTokens(false)
+						.build())
+				.clientSettings(ClientSettings.builder()
+						.requireProofKey(false)
+						.requireAuthorizationConsent(false)
+						.build())
 				.build();
 
 		// In-memory because only two clients now
@@ -185,11 +201,11 @@ public class OauthServerConfig {
 					&& context.getPrincipal().getPrincipal() != null
 					&& context.getPrincipal().getPrincipal() instanceof UserDetailsImpl userDetails) {
 				claims.put("email", userDetails.getUsername());
-				claims.put("enabled", userDetails.isEnabled());
 				claims.put("roles", userDetails.getAuthorities()
 						.stream()
 						.map(GrantedAuthority::getAuthority)
-						.toList());
+						// Mutable because immutable not serialized when token saved with JdbcOAuth2AuthorizationService
+						.collect(Collectors.toList()));
 
 				if (!claims.containsKey("scope")) {
 					claims.put("scope", context.getRegisteredClient().getScopes());

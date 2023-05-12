@@ -8,6 +8,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 /**
@@ -31,6 +33,10 @@ public class OauthClientProperties {
 	@Setter
 	@Validated
 	public static class Client {
+
+		private static final Duration DEFAULT_ACCESS_TOKEN_TTL = Duration.of(5, ChronoUnit.MINUTES);
+		private static final Duration DEFAULT_REFRESH_TOKEN_TTL = Duration.of(1, ChronoUnit.DAYS);
+
 		@NotNull
 		private String id;
 
@@ -42,5 +48,12 @@ public class OauthClientProperties {
 
 		@NotEmpty
 		private Set<String> scopes;
+
+		@NotNull
+		private Duration accessTokenTtl = DEFAULT_ACCESS_TOKEN_TTL;
+
+		@NotNull
+		private Duration refreshTokenTtl = DEFAULT_REFRESH_TOKEN_TTL;
+
 	}
 }
