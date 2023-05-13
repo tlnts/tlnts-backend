@@ -23,7 +23,7 @@ public class AuthorizationServiceSupport {
 		List<Authorization> authorizations = authorizationDao.findByPrincipalName(principalName);
 		if (!authorizations.isEmpty()) {
 			authorizationDao.deleteAll(authorizations);
-			log.debug("For principal [name={}] authorizations [count={}] have been removed", principalName, authorizations.size());
+			log.debug("For principal [name={}] all authorizations [count={}] have been removed", principalName, authorizations.size());
 		}
 	}
 

@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,11 @@ public class UserController {
 	@PutMapping(OAutUserApi.PATH_DISABLE_USER)
 	public void disableUser(@PathVariable("email") String email) {
 		userService.disableUser(email);
+	}
+
+	@DeleteMapping(OAutUserApi.PATH_DELETE_USER_SESSIONS)
+	public void deleteUserSessions(@PathVariable("email") String email) {
+		userService.deleteUserSessions(email);
 	}
 
 }

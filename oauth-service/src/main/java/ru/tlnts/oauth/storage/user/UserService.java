@@ -90,9 +90,15 @@ public class UserService {
 		User user = findUser(email);
 		user.setActive(Boolean.FALSE);
 
+		authorizationServiceSupport.removeAuthorizationsByPrincipalName(email);
+
 		log.info("User {} has been enabled", email);
 	}
 
+	@Transactional
+	public void deleteUserSessions(String email) {
+		authorizationServiceSupport.removeAuthorizationsByPrincipalName(email);
+	}
 
 	private User findUser(@NonNull String email) {
 		return findUserAndMap(email, Function.identity());
