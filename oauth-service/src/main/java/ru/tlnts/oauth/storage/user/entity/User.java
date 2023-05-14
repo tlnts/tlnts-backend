@@ -43,7 +43,7 @@ public class User extends AbstractModel {
     private Boolean active;
 
     @Column(name = "datetime_create", nullable = false)
-    private LocalDateTime dateTimeCreate;
+    private LocalDateTime dateTimeCreate = LocalDateTime.now();
 
     @Column(name = "role", nullable = false, length = ROLE_LENGTH)
     @Enumerated(EnumType.STRING)
