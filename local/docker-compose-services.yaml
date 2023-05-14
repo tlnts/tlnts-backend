@@ -17,6 +17,23 @@ services:
     restart: on-failure
     networks:
       - tlnts-network
+  oauth-service:
+    build:
+      context: oauth-service
+      dockerfile: src/docker/Dockerfile
+    image: tlnts/oauth-service:1.0
+    env_file: local.env
+    hostname: oauth-service
+    container_name: oauth-service
+    depends_on:
+      - broker
+      - postgres
+    ports:
+      - ${OAUTH_API_PORT:-9090}:9090
+      - ${OAUTH_METRICS_PORT:-9091}:8081
+    restart: on-failure
+    networks:
+      - tlnts-network
 
 networks:
   tlnts-network:

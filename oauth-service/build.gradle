@@ -1,0 +1,66 @@
+plugins {
+    id 'org.liquibase.gradle'
+    id 'org.springframework.boot'
+}
+
+group 'ru.tlnts.oauth'
+version '1.0'
+
+ext {
+    postgresJdbcVersion = '42.5.1'
+    springOauth2ServerVersion = '0.4.2'
+    mapstructVersion = '1.5.5.Final'
+    lombokMapstructBindingVersion = '0.1.0'
+    springdocVersion = '1.7.0'
+
+    liquibaseUrl = System.getProperty("liquibase.url")
+    liquibaseUsername = System.getProperty("liquibase.username")
+    liquibasePassword = System.getProperty("liquibase.password")
+}
+
+dependencies {
+    api(project(':common'))
+    api(project(':oauth-api'))
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation "org.springframework.security:spring-security-oauth2-authorization-server:${springOauth2ServerVersion}"
+
+    implementation "org.postgresql:postgresql:${postgresJdbcVersion}"
+
+    implementation 'org.apache.commons:commons-lang3'
+    implementation 'com.google.guava:guava'
+    implementation 'net.logstash.logback:logstash-logback-encoder'
+
+    implementation "org.springdoc:springdoc-openapi-ui:${springdocVersion}"
+    implementation "org.springdoc:springdoc-openapi-security:${springdocVersion}"
+
+    implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+    annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.16.1'
+    liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
+    liquibaseRuntime 'info.picocli:picocli:4.6.1'
+    liquibaseRuntime "org.postgresql:postgresql:${postgresJdbcVersion}"
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile "oauth-service/src/main/resources/migration/changelog-master.yaml"
+            driver 'org.postgresql.Driver'
+            url "${liquibaseUrl}"
+            username "${liquibaseUsername}"
+            password "${liquibasePassword}"
+        }
+    }
+}

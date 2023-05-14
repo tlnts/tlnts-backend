@@ -11,9 +11,15 @@ sleep 10
   -Dliquibase.username='tlnts' \
   -Dliquibase.password='tlnts'
 
+./gradlew :oauth-service:update \
+  -Dliquibase.url='jdbc:postgresql://localhost:5432/oauth' \
+  -Dliquibase.username='tlnts' \
+  -Dliquibase.password='tlnts'
+
 docker-compose \
   -f local/docker-compose-infra.yaml \
   -f local/docker-compose-services.yaml \
   -p tlnts \
   up -d --no-deps --build \
-  feed-service
+  feed-service \
+  oauth-service

@@ -1,0 +1,11 @@
+group 'ru.tlnts.oauth'
+version '1.0'
+
+dependencies {
+    api(project(':common'))
+
+    api 'jakarta.validation:jakarta.validation-api'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
