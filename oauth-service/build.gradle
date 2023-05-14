@@ -11,6 +11,7 @@ ext {
     springOauth2ServerVersion = '0.4.2'
     mapstructVersion = '1.5.5.Final'
     lombokMapstructBindingVersion = '0.1.0'
+    springdocVersion = '1.7.0'
 
     liquibaseUrl = System.getProperty("liquibase.url")
     liquibaseUsername = System.getProperty("liquibase.username")
@@ -35,6 +36,9 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3'
     implementation 'com.google.guava:guava'
     implementation 'net.logstash.logback:logstash-logback-encoder'
+
+    implementation "org.springdoc:springdoc-openapi-ui:${springdocVersion}"
+    implementation "org.springdoc:springdoc-openapi-security:${springdocVersion}"
 
     implementation "org.mapstruct:mapstruct:${mapstructVersion}"
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
