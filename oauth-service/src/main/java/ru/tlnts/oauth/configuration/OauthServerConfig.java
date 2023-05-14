@@ -38,7 +38,6 @@ import org.springframework.security.oauth2.server.authorization.config.annotatio
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.DelegatingOAuth2TokenGenerator;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -58,7 +57,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -200,8 +198,7 @@ public class OauthServerConfig {
 					&& context.getPrincipal() != null
 					&& context.getPrincipal().getPrincipal() != null
 					&& context.getPrincipal().getPrincipal() instanceof UserDetailsImpl userDetails) {
-				claims.put("email", userDetails.getUsername());
-				claims.put("roles", userDetails.getAuthorities()
+				claims.put("role", userDetails.getAuthorities()
 						.stream()
 						.map(GrantedAuthority::getAuthority)
 						// Mutable because immutable not serialized when token saved with JdbcOAuth2AuthorizationService
